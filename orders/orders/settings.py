@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from os import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$=xczso(6+_cw5fah$tipz&mevoqh!0#ljx%4-+l^6gq1t@(7+'
+SECRET_KEY = environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,11 +78,11 @@ WSGI_APPLICATION = 'orders.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'diplom_db_151222',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-        'USER': 'oleg',
-        'PASSWORD': 'postgres',
+        'NAME': environ.get('DB_NAME', 'diplom_db'),
+        'HOST': environ.get('POSTGRES_HOST', '127.0.0.1'),
+        'PORT': environ.get('POSTGRES_PORT', '5431'),
+        'USER': environ.get('POSTRGRES_USER', 'diplom_user'),
+        'PASSWORD': environ.get('POSTGRES_PASSWORD', 'diplom_pswd'),
     }
 }
 
