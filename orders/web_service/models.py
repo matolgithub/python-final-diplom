@@ -107,6 +107,7 @@ class Shop(models.Model):
                                 blank=True, null=True,
                                 on_delete=models.CASCADE)
     state = models.BooleanField(verbose_name='Статус получения заказов', default=True)
+
     # file_name = models.FileField(verbose_name='', null=True, blank=True, storage=storage)
 
     class Meta:
