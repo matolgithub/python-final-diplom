@@ -14,7 +14,6 @@ router.register('categories', CategoryView)
 router.register('products', ProductInfoView, basename='products')
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('user/register', RegisterAccount.as_view(), name='user-register'),
     path('user/register/confirm', ConfirmAccount.as_view(), name='user-register-confirm'),
     path('user/details', AccountDetails.as_view(), name='user-details'),
@@ -27,6 +26,7 @@ urlpatterns = [
     path('partner/orders', PartnerOrders.as_view(), name='partner-orders'),
     path('basket', BasketView.as_view(), name='basket'),
     path('order', OrderView.as_view(), name='order'),
+    path('', include(router.urls)),
 ]
 
 urlpatterns += router.urls

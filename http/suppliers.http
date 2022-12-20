@@ -1,0 +1,44 @@
+# API-запросы для Поставщиков
+
+@baseUrl = http://127.0.0.1:8000
+
+
+###
+
+# Получить статус партнера
+GET {{baseUrl}}/api/v1/partner/state/3/
+Content-Type: application/json
+Authorization: Token 279d9bac936a037d9f7aba350de2d66679d649fc
+
+
+###
+
+# Обновления статуса партнера
+PATCH {{baseUrl}}/api/v1/partner/state/3/
+Content-Type: application/json
+Authorization: Token 279d9bac936a037d9f7aba350de2d66679d649fc
+
+{
+    "state": "on"
+}
+
+###
+
+# Получения заказов магазина
+GET {{baseUrl}}/partner/orders
+Content-Type: application/json
+Authorization: Token 279d9bac936a037d9f7aba350de2d66679d649fc
+
+###
+
+# Обновление прайса
+POST {{baseUrl}}/partner/update
+Content-Type: application/json
+Authorization: Token 279d9bac936a037d9f7aba350de2d66679d649fc
+
+{
+    "url": "https://github.com/matolgithub/python-final-diplom/blob/master/data/shop1.yaml"
+}
+
+###
+

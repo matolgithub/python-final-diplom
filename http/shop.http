@@ -1,0 +1,104 @@
+# API-запросы для покупателей магазина
+
+@baseUrl = http://127.0.0.1:8000
+
+###
+
+# Список магазинов (Successfully: HTTP/1.1 200 OK)
+GET {{baseUrl}}/api/v1/shops
+Content-Type: application/json
+
+
+###
+
+# Список товаров (Successfully: HTTP/1.1 200 OK)
+GET {{baseUrl}}/api/v1/products
+Content-Type: application/json
+
+
+###
+
+# Фильтрация товаров
+GET {{baseUrl}}/products?shop_id=2&category_id=2
+Content-Type: application/json
+
+
+###
+
+# Категории товаров (Successfully: HTTP/1.1 200 OK)
+GET {{baseUrl}}/api/v1/categories
+Content-Type: application/json
+
+
+###
+
+# Добавить товары в корзину
+POST {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token c27b34036682b33090971bb76e4fe028964482ff
+
+{
+    "items":[
+        {"product_info": 1, "quantity": 2},
+        {"product_info": 2, "quantity": 3}
+    ]
+}
+
+
+###
+
+# Редакиторование количества товаров в корзине
+PUT {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token c27b34036682b33090971bb76e4fe028964482ff
+
+{
+    "items":[
+        {
+            "id": 1,
+            "quantity": 10
+        }
+    ]
+}
+
+
+###
+
+# Удаление товара из корзины
+DELETE {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token c27b34036682b33090971bb76e4fe028964482ff
+
+{
+    "items": "2"
+}
+
+
+###
+
+# Получение корзины
+GET {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token c27b34036682b33090971bb76e4fe028964482ff
+
+
+###
+
+# Размещения заказа
+POST {{baseUrl}}/order
+Content-Type: application/json
+Authorization: Token c27b34036682b33090971bb76e4fe028964482ff
+
+{
+    "id": "2",
+    "contact": "3"
+}
+
+###
+
+# Получение заказов
+GET {{baseUrl}}/order
+Content-Type: application/json
+Authorization: Token c27b34036682b33090971bb76e4fe028964482ff
+
+###

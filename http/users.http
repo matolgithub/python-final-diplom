@@ -1,0 +1,135 @@
+# API-запросы для Пользователей сервиса
+
+@baseUrl = http://127.0.0.1:8000
+
+
+###
+
+# Создание пользователя
+# POST {{baseUrl}}/user/register
+POST http://127.0.0.1:8000/api/v1/user/register
+Content-Type: application/json
+
+{
+    "first_name": "first_name_1",
+    "last_name": "last_name_1",
+    "email": "matolpydev@gmail.com",
+    "password":"dkvdk545nkdsn",
+    "company":"company_1",
+    "position":"sales_manager",
+    "type": "buyer"
+}
+
+###
+
+# Подтверждение емаил
+POST {{baseUrl}}/user/register/confirm
+Content-Type: application/json
+
+{
+    "email": "matolpydev@gmail.com",
+    "token":"7b1c0e11069e6de59"
+}
+
+###
+
+# Авторизация пользователя
+POST {{baseUrl}}/user/login
+Content-Type: application/json
+
+{
+    "email": "matolpydev@gmail.com",
+    "password":"dkvdk545nkdsn"
+}
+
+
+###
+
+# Получение контактов
+GET {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token c27b34036682b33090971bb76e4fe028964482ff
+
+
+###
+
+# Добавление контакта
+POST {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token b12ec2a8fea0907cc3958c8263793921ae1bfeec
+
+{
+    "city": "city_1",
+    "street": "street_1",
+    "phone": "+79999999999"
+}
+
+###
+
+# Редактирования контакта
+PUT {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token 5df18ec6eafd9158dde5a6c340491894e9d7e9f7
+
+{
+    "id": 1,
+    "city": "city_1",
+    "street": "street_11",
+    "phone": "+7988888888888"
+}
+
+###
+
+# Удаление контакта
+DELETE {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token 5df18ec6eafd9158dde5a6c340491894e9d7e9f7
+
+{
+    "items": "2"
+}
+
+
+###
+
+# Редактирования пользователя
+POST {{baseUrl}}/user/details
+Content-Type: application/json
+Authorization: Token 5df18ec6eafd9158dde5a6c340491894e9d7e9f7
+
+{
+    "email": "another_email"
+}
+
+###
+
+# Получение информации о пользователе                ?????????????? id??
+GET {{baseUrl}}/user/details
+Content-Type: application/json
+Authorization: Token c27b34036682b33090971bb76e4fe028964482ff
+
+
+###
+
+# Сброс пароля пользователя
+POST {{baseUrl}}/user/password_reset
+Content-Type: application/json
+
+{
+"email": "matolpydev@gmail.com"
+}
+
+
+###
+
+# Подтверждения нового пароля пользователя
+POST {{baseUrl}}/user/password_reset
+Content-Type: application/json
+
+{
+"email": "matolpydev@gmail.com",
+"password": "new_password",
+"token": "2c86e8ca2f43590894942"
+}
+
+###
