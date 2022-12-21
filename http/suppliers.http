@@ -37,7 +37,7 @@ Content-Type: application/json
 Authorization: Token 279d9bac936a037d9f7aba350de2d66679d649fc
 
 {
-    "url": "https://github.com/matolgithub/python-final-diplom/blob/master/data/shop1.yaml"
+    "url": "https://raw.githubusercontent.com/matolgithub/python-final-diplom/master/data/shop1.yaml"
 }
 
 ###

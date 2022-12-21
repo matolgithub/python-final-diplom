@@ -1,13 +1,12 @@
 # API-запросы для Пользователей сервиса
 
-@baseUrl = http://127.0.0.1:8000
+@baseUrl = http://127.0.0.1:8000/api/v1
 
 
 ###
 
-# Создание пользователя
-# POST {{baseUrl}}/user/register
-POST http://127.0.0.1:8000/api/v1/user/register
+# Создание пользователя (Successfully - HTTP/1.1 200 OK)
+POST {{baseUrl}}/user/register
 Content-Type: application/json
 
 {
@@ -17,6 +16,40 @@ Content-Type: application/json
     "password":"dkvdk545nkdsn",
     "company":"company_1",
     "position":"sales_manager",
+    "type": "buyer",
+    "is_staff": true
+}
+
+###
+
+# Создание пользователя (Successfully - HTTP/1.1 200 OK)
+POST {{baseUrl}}/user/register
+Content-Type: application/json
+
+{
+    "first_name": "first_name_2",
+    "last_name": "last_name_2",
+    "email": "111222333@gmail.com",
+    "password":"fnvjdnk454j5nkn",
+    "company":"company_2",
+    "position":"director",
+    "type": "shop"
+}
+
+###
+
+# Создание пользователя (Successfully - HTTP/1.1 200 OK)
+POST {{baseUrl}}/user/register
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "first_name": "first_name_3",
+    "last_name": "last_name_3",
+    "email": "89175955650@mail.ru",
+    "password":"fdjdfdjb242ksskzx",
+    "company":"company_3",
+    "position":"top_manager",
     "type": "buyer"
 }
 
@@ -28,12 +61,12 @@ Content-Type: application/json
 
 {
     "email": "matolpydev@gmail.com",
-    "token":"7b1c0e11069e6de59"
+    "token": "3eb0cd952e2e58561d7d155eb4620e56c70a11ec"
 }
 
 ###
 
-# Авторизация пользователя
+# Авторизация пользователя (Successfully - HTTP/1.1 200 OK)
 POST {{baseUrl}}/user/login
 Content-Type: application/json
 
@@ -42,13 +75,17 @@ Content-Type: application/json
     "password":"dkvdk545nkdsn"
 }
 
+# {
+#   "Status": true,
+#   "Token": "3eb0cd952e2e58561d7d155eb4620e56c70a11ec"
+# }
 
 ###
 
-# Получение контактов
+# Получение контактов (Successfully - HTTP/1.1 200 OK)
 GET {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token c27b34036682b33090971bb76e4fe028964482ff
+Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
 
 
 ###
@@ -56,7 +93,7 @@ Authorization: Token c27b34036682b33090971bb76e4fe028964482ff
 # Добавление контакта
 POST {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token b12ec2a8fea0907cc3958c8263793921ae1bfeec
+Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
 
 {
     "city": "city_1",
@@ -69,7 +106,7 @@ Authorization: Token b12ec2a8fea0907cc3958c8263793921ae1bfeec
 # Редактирования контакта
 PUT {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token 5df18ec6eafd9158dde5a6c340491894e9d7e9f7
+Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
 
 {
     "id": 1,
@@ -80,38 +117,68 @@ Authorization: Token 5df18ec6eafd9158dde5a6c340491894e9d7e9f7
 
 ###
 
-# Удаление контакта
+# Удаление контакта (Successfully - HTTP/1.1 200 OK)
 DELETE {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token 5df18ec6eafd9158dde5a6c340491894e9d7e9f7
+Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
 
 {
-    "items": "2"
+    "items": "1"
 }
 
 
 ###
 
-# Редактирования пользователя
+# Редактирования пользователя (Successfully - HTTP/1.1 200 OK)
 POST {{baseUrl}}/user/details
 Content-Type: application/json
-Authorization: Token 5df18ec6eafd9158dde5a6c340491894e9d7e9f7
+Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
 
 {
-    "email": "another_email"
+    "email": "matolpydev@gmail.com"
 }
 
+# {
+#   "Status": true
+# }
+
 ###
 
-# Получение информации о пользователе                ?????????????? id??
+# Редактирования пользователя (Successfully - HTTP/1.1 200 OK)
+POST {{baseUrl}}/user/details
+Content-Type: application/json
+Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
+
+{
+    "type": "shop"
+}
+
+# {
+#   "Status": true
+# }
+
+###
+
+
+# Получение информации о пользователе 
 GET {{baseUrl}}/user/details
 Content-Type: application/json
-Authorization: Token c27b34036682b33090971bb76e4fe028964482ff
+Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
+
+# {
+#   "id": 1,
+#   "first_name": "first_name_1",
+#   "last_name": "last_name_1",
+#   "email": "matolpydev@gmail.com",
+#   "company": "company_1",
+#   "position": "sales_manager",
+#   "contacts": []
+# }
 
 
 ###
 
-# Сброс пароля пользователя
+# Сброс пароля пользователя (Successfully - HTTP/1.1 200 OK)
 POST {{baseUrl}}/user/password_reset
 Content-Type: application/json
 
@@ -119,17 +186,25 @@ Content-Type: application/json
 "email": "matolpydev@gmail.com"
 }
 
+# {
+#   "status": "OK"
+# }
+
 
 ###
 
-# Подтверждения нового пароля пользователя
+# Подтверждения нового пароля пользователя (Successfully - HTTP/1.1 200 OK)
 POST {{baseUrl}}/user/password_reset
 Content-Type: application/json
 
 {
 "email": "matolpydev@gmail.com",
 "password": "new_password",
-"token": "2c86e8ca2f43590894942"
+"token": "3eb0cd952e2e58561d7d155eb4620e56c70a11ec"
 }
+
+# {
+#   "status": "OK"
+# }
 
 ###
