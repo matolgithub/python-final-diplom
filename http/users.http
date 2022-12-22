@@ -55,13 +55,13 @@ Content-Type: application/json
 
 ###
 
-# Подтверждение емаил
+# Подтверждение емаил (Successfully - HTTP/1.1 200 OK)
 POST {{baseUrl}}/user/register/confirm
 Content-Type: application/json
 
 {
     "email": "matolpydev@gmail.com",
-    "token": "3eb0cd952e2e58561d7d155eb4620e56c70a11ec"
+    "token": "892afaa2832163077e3bcb0a621a963c2e212d88"
 }
 
 ###
@@ -77,7 +77,7 @@ Content-Type: application/json
 
 # {
 #   "Status": true,
-#   "Token": "3eb0cd952e2e58561d7d155eb4620e56c70a11ec"
+#   "Token": "892afaa2832163077e3bcb0a621a963c2e212d88"
 # }
 
 ###
@@ -85,7 +85,7 @@ Content-Type: application/json
 # Получение контактов (Successfully - HTTP/1.1 200 OK)
 GET {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
+Authorization: Token 892afaa2832163077e3bcb0a621a963c2e212d88
 
 
 ###
@@ -93,7 +93,7 @@ Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
 # Добавление контакта
 POST {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
+Authorization: Token 892afaa2832163077e3bcb0a621a963c2e212d88
 
 {
     "city": "city_1",
@@ -103,10 +103,10 @@ Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
 
 ###
 
-# Редактирования контакта
+# Редактирования контакта (Successfully - HTTP/1.1 200 OK)
 PUT {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
+Authorization: Token 892afaa2832163077e3bcb0a621a963c2e212d88
 
 {
     "id": 1,
@@ -120,7 +120,7 @@ Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
 # Удаление контакта (Successfully - HTTP/1.1 200 OK)
 DELETE {{baseUrl}}/user/contact
 Content-Type: application/json
-Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
+Authorization: Token 892afaa2832163077e3bcb0a621a963c2e212d88
 
 {
     "items": "1"
@@ -132,7 +132,7 @@ Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
 # Редактирования пользователя (Successfully - HTTP/1.1 200 OK)
 POST {{baseUrl}}/user/details
 Content-Type: application/json
-Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
+Authorization: Token 892afaa2832163077e3bcb0a621a963c2e212d88
 
 {
     "email": "matolpydev@gmail.com"
@@ -147,7 +147,7 @@ Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
 # Редактирования пользователя (Successfully - HTTP/1.1 200 OK)
 POST {{baseUrl}}/user/details
 Content-Type: application/json
-Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
+Authorization: Token 892afaa2832163077e3bcb0a621a963c2e212d88
 
 {
     "type": "shop"
@@ -163,7 +163,7 @@ Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
 # Получение информации о пользователе 
 GET {{baseUrl}}/user/details
 Content-Type: application/json
-Authorization: Token 3eb0cd952e2e58561d7d155eb4620e56c70a11ec
+Authorization: Token 892afaa2832163077e3bcb0a621a963c2e212d88
 
 # {
 #   "id": 1,
@@ -200,7 +200,7 @@ Content-Type: application/json
 {
 "email": "matolpydev@gmail.com",
 "password": "new_password",
-"token": "3eb0cd952e2e58561d7d155eb4620e56c70a11ec"
+"token": "892afaa2832163077e3bcb0a621a963c2e212d88"
 }
 
 # {
