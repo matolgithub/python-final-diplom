@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': environ.get('DB_NAME', 'diplom_db'),
         'HOST': environ.get('POSTGRES_HOST', '127.0.0.1'),
-        'PORT': environ.get('POSTGRES_PORT', '5433'),
+        'PORT': environ.get('POSTGRES_PORT', '5432'),
         'USER': environ.get('POSTRGRES_USER', 'diplom_user'),
         'PASSWORD': environ.get('POSTGRES_PASSWORD', 'diplom_pswd'),
     }
