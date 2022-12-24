@@ -15,9 +15,9 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status, viewsets
-from distutils.util import strtobool
-from ujson import loads as load_json
+# from rest_framework import status, viewsets
+# from distutils.util import strtobool
+# from ujson import loads as load_json
 
 from .serializers import UserSerializer, CategorySerializer, ShopSerializer, ProductInfoSerializer, \
     OrderItemSerializer, OrderSerializer, ContactSerializer
@@ -25,7 +25,7 @@ from .serializers import UserSerializer, CategorySerializer, ShopSerializer, Pro
 from .models import Shop, Category, ProductInfo, Product, Parameter, ProductParameter, Contact, Order, \
     OrderItem, ConfirmEmailToken
 
-from .tasks import new_order, new_user_email
+from orders.tasks import new_order, new_user_email
 
 
 class RegisterAccount(APIView):

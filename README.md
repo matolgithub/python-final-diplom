@@ -49,7 +49,7 @@ python manage.py runserver
 - выполнить команду в другом терминале:
 
 ```bash
-celery -A web_service worker --loglevel=info
+celery -A orders worker --loglevel=info
 ```
 
 ## Примеры запросов к API

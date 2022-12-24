@@ -1,9 +1,10 @@
-from django.conf import settings
+from os import environ
+# from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.dispatch import receiver, Signal
 from django_rest_passwordreset.signals import reset_password_token_created
 
-from .models import ConfirmEmailToken, User
+from web_service.models import ConfirmEmailToken, User
 
 
 @receiver(reset_password_token_created)
@@ -25,7 +26,8 @@ def password_reset_token_created(sender, instance, reset_password_token, **kwarg
         # message:
         reset_password_token.key,
         # from:
-        settings.EMAIL_HOST_USER,
+        # settings.EMAIL_HOST_USER,
+        environ.get('MAIL_DEFAULT_SENDER', 'matolpydev@gmail.com'),
         # to:
         [reset_password_token.user.email]
     )
@@ -45,7 +47,8 @@ def new_user_registered_signal(user_id, **kwargs):
         # message:
         token.key,
         # from:
-        settings.EMAIL_HOST_USER,
+        # settings.EMAIL_HOST_USER,
+        environ.get('MAIL_DEFAULT_SENDER', 'matolpydev@gmail.com'),
         # to:
         [token.user.email]
     )
@@ -65,7 +68,8 @@ def new_order_signal(user_id, **kwargs):
         # message:
         'Заказ сформирован',
         # from:
-        settings.EMAIL_HOST_USER,
+        # settings.EMAIL_HOST_USER,
+        environ.get('MAIL_DEFAULT_SENDER', 'matolpydev@gmail.com'),
         # to:
         [user.email]
     )

@@ -20,6 +20,10 @@ Content-Type: application/json
     "is_staff": true
 }
 
+# {
+#   "Status": true
+# }
+
 ###
 
 
@@ -87,7 +91,7 @@ Content-Type: application/json
 
 {
     "email": "matolpydev@gmail.com",
-    "token": "00c98148d6857dc285d0e7290c7afd57c858b027"
+    "token": "c3e06221b0e0beba461926b4b2a5a77499a2ebf0"
 }
 
 ###
@@ -103,7 +107,7 @@ Content-Type: application/json
 
 # {
 #   "Status": true,
-#   "Token": "00c98148d6857dc285d0e7290c7afd57c858b027"
+#   "Token": "c3e06221b0e0beba461926b4b2a5a77499a2ebf0"
 # }
 
 ###
