@@ -63,3 +63,4 @@ celery -A orders worker --loglevel=info
 * [База данных](./screens/screens_db)
 * [Admin - панель](./screens/screens_admin)
 * [Api-DRF](./screens/screens_api_drf)
+* [Email](./screens/screens_email)
