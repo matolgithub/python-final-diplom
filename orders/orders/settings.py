@@ -129,7 +129,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STORAGE = os.path.join(BASE_DIR, 'storage')
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -162,13 +163,15 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'web_service.User'
 
-DEFAULT_FROM_EMAIL = environ.get('DEFAULT_FROM_EMAIL', 'matolpydev@gmail.com')
-SERVER_EMAIL = environ.get('SERVER_EMAIL', 'matolpydev@gmail.com')
-EMAIL_USE_TLS = environ.get('EMAIL_USE_TLS', True)
 EMAIL_HOST = environ.get('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = environ.get('EMAIL_PORT', 587)
+EMAIL_USE_TLS = environ.get('EMAIL_USE_TLS', True)
+EMAIL_USE_SSL = environ.get('EMAIL_USE_SSL', False)
 EMAIL_HOST_USER = environ.get('EMAIL_HOST_USER', 'matolpydev@gmail.com')
 EMAIL_HOST_PASSWORD = environ.get('EMAIL_HOST_PASSWORD', 'csszpkcslndaiita')
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CELERY_BROKER_URL = environ.get('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
 CELERY_RESULT_BACKEND = environ.get('CELERY_RESULT_BACKEND', 'redis://127.0.0.1:6379/1')

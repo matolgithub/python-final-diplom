@@ -1,8 +1,7 @@
 from os import environ
 
-from orders import settings
 from orders.wsgi import *
-# from django.conf import settings
+from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, send_mail, send_mass_mail, EmailMessage
 from django.dispatch import receiver, Signal
 from django_rest_passwordreset.signals import reset_password_token_created
@@ -37,7 +36,7 @@ def password_reset_token_created(sender, instance, reset_password_token, **kwarg
 
 def new_user_registered_signal(user_id, **kwargs):
     """
-    отправляем письмо с подтверждение почты при регистрации
+    Отправляем письмо с подтверждением почты при регистрации
     """
     # send an e-mail to the user
     token, _ = ConfirmEmailToken.objects.get_or_create(user_id=user_id)
@@ -57,7 +56,7 @@ def new_user_registered_signal(user_id, **kwargs):
 
 def new_order_signal(user_id, **kwargs):
     """
-    отправяем письмо при изменении статуса заказа
+    Отправяем письмо при изменении статуса заказа
     """
     # send an e-mail to the user
     user = User.objects.get(id=user_id)

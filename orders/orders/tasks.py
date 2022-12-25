@@ -1,5 +1,5 @@
 from os import environ
-from .celery import app
+from .celery_conf import app
 from .signals import new_user_registered_signal, new_order_signal, password_reset_token_created
 
 
