@@ -68,7 +68,7 @@ class ProductParameterAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     models = Order
-    list_display = ('user', 'dt')
+    list_display = ('user', 'dt', 'state', 'contact')
 
 
 @admin.register(OrderItem)

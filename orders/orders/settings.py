@@ -162,19 +162,17 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'web_service.User'
 
-EMAIL_HOST = 'smtp.googlemail.com'
-EMAIL_HOST_USER = 'matolpydev@gmail.com'
-EMAIL_HOST_PASSWORD = 'csszpkcslndaiita'
-EMAIL_PORT = '587'
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = True
-SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = environ.get('DEFAULT_FROM_EMAIL', 'matolpydev@gmail.com')
+SERVER_EMAIL = environ.get('SERVER_EMAIL', 'matolpydev@gmail.com')
+EMAIL_USE_TLS = environ.get('EMAIL_USE_TLS', True)
+EMAIL_HOST = environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = environ.get('EMAIL_PORT', 587)
+EMAIL_HOST_USER = environ.get('EMAIL_HOST_USER', 'matolpydev@gmail.com')
+EMAIL_HOST_PASSWORD = environ.get('EMAIL_HOST_PASSWORD', 'csszpkcslndaiita')
 
-REDIS_HOST = '127.0.0.1'
-REDIS_PORT = '6379'
-CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_BROKER_URL = environ.get('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
+CELERY_RESULT_BACKEND = environ.get('CELERY_RESULT_BACKEND', 'redis://127.0.0.1:6379/1')
 CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
-CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
