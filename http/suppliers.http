@@ -8,7 +8,7 @@
 # Получить статус партнера
 GET {{baseUrl}}/partner/state/2/
 Content-Type: application/json
-Authorization: Token e370f30355e7d7a2a42dc3069613b0c80a10f39b
+Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
 
 
 ###
@@ -16,7 +16,7 @@ Authorization: Token e370f30355e7d7a2a42dc3069613b0c80a10f39b
 # Обновления статуса партнера
 PATCH {{baseUrl}}/partner/state/2/
 Content-Type: application/json
-Authorization: Token e370f30355e7d7a2a42dc3069613b0c80a10f39b
+Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
 
 {
     "state": "on"
@@ -27,14 +27,14 @@ Authorization: Token e370f30355e7d7a2a42dc3069613b0c80a10f39b
 # Получения заказов магазина (Successfully - HTTP/1.1 200 OK)
 GET {{baseUrl}}/partner/orders
 Content-Type: application/json
-Authorization: Token e370f30355e7d7a2a42dc3069613b0c80a10f39b
+Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
 
 ###
 
 # Обновление прайса (Successfully - HTTP/1.1 200 OK)
 POST {{baseUrl}}/partner/update
 Content-Type: application/json
-Authorization: Token e370f30355e7d7a2a42dc3069613b0c80a10f39b
+Authorization: Token 2a1335f70806544d2b14cc3154199deab0510dec
 
 {
     "url": "https://raw.githubusercontent.com/matolgithub/python-final-diplom/master/netology/data/shop1.yaml"

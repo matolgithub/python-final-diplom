@@ -9,35 +9,31 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.db import IntegrityError
 from django.db.models import Q, Sum, F
-from django.db.models.query import Prefetch
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-# from rest_framework import status, viewsets
-# from distutils.util import strtobool
-# from ujson import loads as load_json
+from rest_framework import status
 
 from .serializers import UserSerializer, CategorySerializer, ShopSerializer, ProductInfoSerializer, \
     OrderItemSerializer, OrderSerializer, ContactSerializer
 
 from .models import Shop, Category, ProductInfo, Product, Parameter, ProductParameter, Contact, Order, \
     OrderItem, ConfirmEmailToken
-
-from orders.tasks import new_order, new_user_email
+from orders.signals import new_user_registered, new_order
 
 
 class RegisterAccount(APIView):
     """
-    Для регистрации покупателей
+    Для регистрации пользователя
     """
+    throttle_scope = 'anon'
 
     # Регистрация методом POST
     def post(self, request, *args, **kwargs):
-
         # проверяем обязательные аргументы
-        if {'first_name', 'last_name', 'email', 'password', 'company', 'position'}.issubset(request.data):
+        if {'email', 'password', 'company', 'position', 'type'}.issubset(request.data):
             errors = {}
 
             # проверяем пароль на сложность
@@ -57,21 +53,23 @@ class RegisterAccount(APIView):
                     user = user_serializer.save()
                     user.set_password(request.data['password'])
                     user.save()
-                    # new_user_registered.send(sender=self.__class__, user_id=user.id)
-                    new_user_email.delay(user_id=user.id)
+                    new_user_registered.send(sender=self.__class__, user_id=user.id)
                     return JsonResponse({'Status': True})
                 else:
-                    return JsonResponse({'Status': False, 'Errors': user_serializer.errors})
+                    return JsonResponse({'Status': False, 'Errors': user_serializer.errors},
+                                        status=status.HTTP_403_FORBIDDEN)
 
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class ConfirmAccount(APIView):
     """
-    Класс для подтверждения почтового адреса
-    """
-
+   Класс для подтверждения почтового адреса
+   """
     # Регистрация методом POST
+    throttle_scope = 'anon'
+
     def post(self, request, *args, **kwargs):
 
         # проверяем обязательные аргументы
@@ -80,20 +78,23 @@ class ConfirmAccount(APIView):
             token = ConfirmEmailToken.objects.filter(user__email=request.data['email'],
                                                      key=request.data['token']).first()
             if token:
-                token.user.is_active = True
-                token.user.save()
+                token.is_active = True
+                token.save()
                 token.delete()
                 return JsonResponse({'Status': True})
             else:
-                return JsonResponse({'Status': False, 'Errors': 'Неправильно указан токен или email'})
+                return JsonResponse({'Status': False, 'Errors': 'Неправильно указан токен или email'},
+                                    status=status.HTTP_403_FORBIDDEN)
 
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class AccountDetails(APIView):
     """
     Класс для работы данными пользователя
     """
+    throttle_scope = 'user'
 
     # получить данные
     def get(self, request, *args, **kwargs):
@@ -136,6 +137,7 @@ class LoginAccount(APIView):
     """
     Класс для авторизации пользователей
     """
+    throttle_scope = 'anon'
 
     # Авторизация методом POST
     def post(self, request, *args, **kwargs):
@@ -158,8 +160,9 @@ class ContactView(APIView):
     """
     Класс для работы с контактами покупателей
     """
+    throttle_scope = 'user'
 
-    # получить мои контакты
+    # получить контакты
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
@@ -213,7 +216,6 @@ class ContactView(APIView):
         if 'id' in request.data:
             if request.data['id']:
                 contact = Contact.objects.filter(id=request.data['id'], user_id=request.user.id).first()
-                print(contact)
                 if contact:
                     serializer = ContactSerializer(contact, data=request.data, partial=True)
                     if serializer.is_valid():
@@ -229,6 +231,7 @@ class BasketView(APIView):
     """
     Класс для работы с корзиной пользователя
     """
+    throttle_scope = 'user'
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -364,6 +367,7 @@ class ProductInfoView(APIView):
     """
     Класс для поиска товаров
     """
+    throttle_scope = 'anon'
 
     def get(self, request, *args, **kwargs):
 
@@ -407,6 +411,7 @@ class PartnerUpdateView(APIView):
     """
     Класс для обновления прайса от поставщика
     """
+    throttle_scope = 'partner'
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -420,8 +425,8 @@ class PartnerUpdateView(APIView):
             validate_url = URLValidator()
             try:
                 validate_url(url)
-            except ValidationError as e:
-                return JsonResponse({'Status': False, 'Error': str(e)})
+            except ValidationError as ex:
+                return JsonResponse({'Status': False, 'Error': str(ex)})
             else:
                 stream = get(url).content
 
@@ -462,6 +467,8 @@ class PartnerStateViewSet(ModelViewSet):
     """
     Класс для работы со статусом поставщика
     """
+    throttle_scope = 'user'
+
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
 
@@ -475,6 +482,7 @@ class PartnerOrdersView(APIView):
     """
     Класс для получения заказов поставщиками
     """
+    throttle_scope = 'user'
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:

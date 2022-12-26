@@ -57,31 +57,20 @@ class User(AbstractUser):
     objects = UserManager()
     USERNAME_FIELD = 'email'
     email = models.EmailField(('email address'), unique=True)
-    company = models.CharField(
-        verbose_name='Компания', max_length=40, blank=True)
-    position = models.CharField(
-        verbose_name='Должность', max_length=40, blank=True)
+    company = models.CharField(verbose_name='Компания', max_length=40, blank=True)
+    position = models.CharField(verbose_name='Должность', max_length=40, blank=True)
     username_validator = UnicodeUsernameValidator()
-    username = models.CharField(
-        ('username'),
-        max_length=150,
-        help_text=(
-            'Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
-        validators=[username_validator],
-        error_messages={
-            'unique': ("A user with that username already exists."),
-        },
-    )
-    is_active = models.BooleanField(
-        ('active'),
-        default=True,
-        help_text=(
-            'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
-        ),
-    )
-    type = models.CharField(verbose_name='Тип пользователя',
-                            choices=USER_TYPE_CHOICES, max_length=5, default='buyer')
+    username = models.CharField(('username'), max_length=150, help_text=(
+        'Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+                                validators=[username_validator],
+                                error_messages={'unique': ("A user with that username already exists."), },
+                                )
+    is_active = models.BooleanField(('active'), default=True, help_text=(
+        'Designates whether this user should be treated as active. '
+        'Unselect this instead of deleting accounts.'
+    ),
+                                    )
+    type = models.CharField(verbose_name='Тип пользователя', choices=USER_TYPE_CHOICES, max_length=5, default='buyer')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -134,18 +123,10 @@ class ConfirmEmailToken(models.Model):
             "The User which is associated to this password reset token")
     )
 
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name=("When was this token generated")
-    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=("When was this token generated"))
 
     # Key field, though it is not the primary key of the model
-    key = models.CharField(
-        ("Key"),
-        max_length=64,
-        db_index=True,
-        unique=True
-    )
+    key = models.CharField(("Key"), max_length=64, db_index=True, unique=True)
 
     def save(self, *args, **kwargs):
         if not self.key:
@@ -165,8 +146,7 @@ class Shop(models.Model):
     user = models.OneToOneField(User, verbose_name='Пользователь', related_name='shop_to_user',
                                 blank=True, null=True,
                                 on_delete=models.CASCADE)
-    state = models.BooleanField(
-        verbose_name='статус получения заказов', default=True)
+    state = models.BooleanField(verbose_name='Статус получения заказов', default=True)
 
     class Meta:
         verbose_name = 'Магазин'
