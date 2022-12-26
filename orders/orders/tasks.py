@@ -6,11 +6,11 @@ from web_service.models import Shop, Category, Product, Parameter, ProductParame
 
 
 @app.task()
-def send_email(title, message, email, *args, **kwargs):
-    email_list = []
-    email_list.append(email)
+def send_emails(title, message, email, *args, **kwargs):
+    emails = []
+    emails.append(email)
     try:
-        msg = EmailMultiAlternatives(subject=title, body=message, from_email=EMAIL_HOST_USER, to=email_list)
+        msg = EmailMultiAlternatives(subject=title, body=message, from_email=EMAIL_HOST_USER, to=emails)
         msg.send()
         return f'Title: {msg.subject}, Message:{msg.body}'
     except Exception as ex:
