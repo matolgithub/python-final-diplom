@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     # 'import_export_celery',
-    'import_export',
+    'import_export_goods',
 
     'web_service',
 ]

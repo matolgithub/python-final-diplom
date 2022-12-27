@@ -1,0 +1,5 @@
+id,model,external_id,product,shop,quantity,price,price_rrc
+5,apple/iphone/xs-max,4216292,1,2,14,110000,116990
+6,apple/iphone/xr,4216313,2,2,9,65000,69990
+7,apple/iphone/xr,4216226,3,2,5,65000,69990
+8,apple/iphone/xr,4672670,4,2,7,60000,64990
