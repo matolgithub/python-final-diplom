@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django_rest_passwordreset.tokens import get_token_generator
+from django.core.files import storage
 
 USER_TYPE_CHOICES = (
     ('shop', 'Магазин'),
@@ -147,6 +148,7 @@ class Shop(models.Model):
                                 blank=True, null=True,
                                 on_delete=models.CASCADE)
     state = models.BooleanField(verbose_name='Статус получения заказов', default=True)
+    file_name = models.FileField(verbose_name='', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Магазин'
