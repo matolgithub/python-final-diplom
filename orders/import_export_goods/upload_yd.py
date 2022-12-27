@@ -30,6 +30,5 @@ def upload_data():
     period = time_end - time_start
     print(f"\nCopying files to Disk.Yandex - complete! Start: {time_start}, end: {time_end}, total run time: {period}.")
 
-
-if __name__ == "__main__":
-    upload_data()
+# if __name__ == "__main__":
+#     upload_data()

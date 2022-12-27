@@ -64,3 +64,8 @@ celery -A orders worker --loglevel=info
 * [Admin - панель](./screens/screens_admin)
 * [Api-DRF](./screens/screens_api_drf)
 * [Email](./screens/screens_email)
+* [Export](./screens/screens_yandex_disk)
+
+## Ссылка на Disk.Yandex, куда были загружены данные о товарах с базы данных
+
+* [Disk.Yandex](https://disk.yandex.ru/d/FNp_7YIE7GJN-Q)

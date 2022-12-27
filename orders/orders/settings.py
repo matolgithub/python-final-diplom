@@ -41,10 +41,9 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'import_export_celery',
-    'import_export_goods',
 
     'web_service',
+    'import_export_goods',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'author.middlewares.AuthorDefaultBackendMiddlewar',
 ]
 
 ROOT_URLCONF = 'orders.urls'

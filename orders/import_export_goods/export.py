@@ -1,13 +1,14 @@
 from orders.wsgi import *
 from datetime import datetime
 from orders.settings import BASE_DIR
-from web_service.models import ProductInfo, Product
+from web_service.models import ProductInfo
 from import_export import resources
 
 
 class ProductResource(resources.ModelResource):
     class Meta:
         model = ProductInfo
+        use_natural_foreign_keys = True
 
     def export_from_db(self):
         dataset = ProductResource().export()
@@ -32,7 +33,7 @@ class ProductResource(resources.ModelResource):
             file.write(str(data_json))
 
 
-if __name__ == "__main__":
-    exp_obj = ProductResource()
-    exp_obj.export_from_db()
-    exp_obj.write_file()
+# if __name__ == "__main__":
+#     exp_obj = ProductResource()
+#     exp_obj.export_from_db()
+    # exp_obj.write_file()
