@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     'web_service',
     'import_export_goods',
+    'ckeditor',
+    'email_signals',
 ]
 
 MIDDLEWARE = [
@@ -172,6 +174,7 @@ EMAIL_HOST_PASSWORD = environ.get('EMAIL_HOST_PASSWORD', 'csszpkcslndaiita')
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_SIGNAL_DEFAULT_SENDER = EMAIL_HOST_USER
 
 CELERY_BROKER_URL = environ.get('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
 CELERY_RESULT_BACKEND = environ.get('CELERY_RESULT_BACKEND', 'redis://127.0.0.1:6379/1')

@@ -4,8 +4,26 @@ from django.core.mail.message import EmailMultiAlternatives
 from .celery_conf import app
 from web_service.models import Shop, Category, Product, Parameter, ProductParameter, ProductInfo
 
+from celery.utils.log import get_task_logger
 
-@app.task()
+from django.db import connection
+import celery
+
+logger = get_task_logger(__name__)
+
+
+class FaultTolerantTask(celery.Task):
+    """ Implements after return hook to close the invalid connection.
+    This way, django is forced to serve a new connection for the next
+    task.
+    """
+    abstract = True
+
+    def after_return(self, *args, **kwargs):
+        connection.close()
+
+
+@app.task(base=FaultTolerantTask, name='send_email_task')
 def send_emails(title, message, email, *args, **kwargs):
     emails = []
     emails.append(email)
@@ -23,7 +41,7 @@ def open_file(shop):
     return data
 
 
-@app.task()
+@app.task(base=FaultTolerantTask, name='import_shop_task')
 def import_shop_data(data, user_id):
     file = open_file(data)
 
