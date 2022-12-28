@@ -44,8 +44,6 @@ INSTALLED_APPS = [
 
     'web_service',
     'import_export_goods',
-    'ckeditor',
-    'email_signals',
 ]
 
 MIDDLEWARE = [

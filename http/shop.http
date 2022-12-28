@@ -35,7 +35,7 @@ Content-Type: application/json
 # Добавить товары в корзину (Successfully: HTTP/1.1 200 OK)
 POST {{baseUrl}}/api/v1/basket
 Content-Type: application/json
-Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
+Authorization: Token 62ac6283fe26a5221bfb6a8e823dc37a5a9f649c
 
 {
     "items":[
@@ -105,8 +105,8 @@ Content-Type: application/json
 Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
 
 {
-    "id": "1"
-    # "contact": "2"
+    "id": "1",
+    "contact": "2"
 }
 
 ###

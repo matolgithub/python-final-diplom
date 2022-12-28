@@ -354,13 +354,13 @@ class OrderView(APIView):
                         state='new')
                 except IntegrityError as error:
                     print(error)
-                    return JsonResponse({'Status': False, 'Errors': 'Неправильно указаны аргументы'})
+                    return JsonResponse({'Status': False, 'Errors': 'Неправильно указаны аргументы'}, status=400)
                 else:
                     if is_updated:
-                        new_order.delay(user_id=request.user.id)
+                        new_order.send(sender=self.__class__, user_id=request.user.id)
                         return JsonResponse({'Status': True})
 
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'})
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'}, status=400)
 
 
 class ProductInfoView(APIView):

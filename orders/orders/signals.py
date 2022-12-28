@@ -1,11 +1,11 @@
 from orders.wsgi import *
 from django.dispatch import receiver, Signal
 from django_rest_passwordreset.signals import reset_password_token_created
-from web_service.models import User, ConfirmEmailToken, Order, OrderItem
+from web_service.models import User, ConfirmEmailToken
 from orders.tasks import send_emails
 
 new_user_registered = Signal('user_id')
-new_order = Signal('order_id')
+new_order = Signal('user_id')
 
 
 @receiver(reset_password_token_created)
@@ -17,7 +17,6 @@ def password_reset_token_created(sender, instance, reset_password_token, **kwarg
     title = f'Сброс пароля для {reset_password_token.user}'
     message = f'Токен для сброса пароля {reset_password_token.key}'
     email = reset_password_token.user
-    # send_emails(title, message, email)
     send_emails.delay(title, message, email)
 
 
@@ -35,17 +34,14 @@ def new_user_registered_signal(user_id, **kwargs):
 
 
 @receiver(new_order)
-def new_order_signal(order_id, **kwargs):
+def new_order_signal(user_id, **kwargs):
     """
-    Отправяем письмо при изменении статуса заказа
+    отправяем письмо при изменении статуса заказа
     """
-    # send an e-mail to the user if change order status
-    order = Order.objects.get(id=order_id)
-    order_state, user_fn, user_ln, user_email = order.state, order.user.first_name, order.user.last_name, \
-        order.user.email
-
-    title = f'Обновление статуса заказа для {user_fn} {user_ln}.'
-    message = f'Статус заказа изменён на: {order_state}.'
-    email = user_email
-
+    # send an e-mail to the user
+    user = User.objects.get(id=user_id)
+    user_email, user_fn, user_ln, user_company, user_position = user.email, user.first_name, user.last_name, user.company, user.position
+    title = f'Информация для {user_company}, {user_email} об изменении статуса заказа.'
+    message = f'Благодарим Вас: {user_position} {user_fn} {user_ln}! Статус Вашего заказа изменён!'
+    email = user.email
     send_emails.delay(title, message, email)
