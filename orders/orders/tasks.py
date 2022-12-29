@@ -1,3 +1,5 @@
+import os
+
 from django.http import JsonResponse
 from django.core.mail.message import EmailMultiAlternatives
 from django.core.validators import URLValidator
@@ -41,8 +43,8 @@ def send_emails(title, message, email, *args, **kwargs):
 
 
 @app.task(base=FaultTolerantTask, name='import_shop_task')
-def import_shop_data(data, user_id):
-    with open('./yaml/goods.yaml', 'r') as data_file:
+def import_shop_data(user_id):
+    with open('orders/yaml/goods.yaml', 'r') as data_file:
         yaml_file = yaml.safe_load(data_file)
 
     shop, _ = Shop.objects.get_or_create(user_id=user_id,

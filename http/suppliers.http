@@ -1,40 +1,44 @@
 # API-запросы для Поставщиков
 
-@baseUrl = http://127.0.0.1:8000/
+@baseUrl = http://127.0.0.1:8000/api/v1
 
 
 ###
 
 # Получить статус партнера
-GET {{baseUrl}}/api/v1/partner/state
+GET {{baseUrl}}/partner/state
 Content-Type: application/json
-Authorization: Token 06ee639c399d21e54d7af52d13a39e46f5221dfd
+Authorization: Token 128b897d8740d088e54dab5e696f9f3276658385
 
 
 ###
 
 # Обновления статуса партнера
-PATCH {{baseUrl}}/partner/state
+POST {{baseUrl}}/partner/state
 Content-Type: application/json
-Authorization: Token 06ee639c399d21e54d7af52d13a39e46f5221dfd
+Authorization: Token 128b897d8740d088e54dab5e696f9f3276658385
 
 {
     "state": "on"
 }
+
+# {
+#   "Status": true
+# }
 
 ###
 
 # Получения заказов магазина (Successfully - HTTP/1.1 200 OK)
 GET {{baseUrl}}/partner/orders
 Content-Type: application/json
-Authorization: Token 2a1335f70806544d2b14cc3154199deab0510dec
+Authorization: Token 128b897d8740d088e54dab5e696f9f3276658385
 
 ###
 
 # Обновление прайса (Successfully - HTTP/1.1 200 OK)
-POST {{baseUrl}}/api/v1/partner/update
+POST {{baseUrl}}/partner/update
 Content-Type: application/json
-Authorization: Token 06ee639c399d21e54d7af52d13a39e46f5221dfd
+Authorization: Token 128b897d8740d088e54dab5e696f9f3276658385
 
 {
     "url": "https://raw.githubusercontent.com/matolgithub/python-final-diplom/master/netology/data/shop1.yaml"
@@ -43,6 +47,22 @@ Authorization: Token 06ee639c399d21e54d7af52d13a39e46f5221dfd
 # {
 #   "Status": true,
 #   "Sent_email_status": "Sent"
+# }
+
+###
+
+# Обновление прайса через Celery tasks (Successfully - HTTP/1.1 200 OK)
+POST {{baseUrl}}/partner/update_celery
+Content-Type: application/json
+Authorization: Token 128b897d8740d088e54dab5e696f9f3276658385
+
+{
+    "url": "https://github.com/matolgithub/python-final-diplom/tree/master/orders/orders/yaml/goods.yaml"
+}
+
+# {
+#   "Status": true,
+#   "Sent_email_status": "Sent_With_Celery"
 # }
 
 ###

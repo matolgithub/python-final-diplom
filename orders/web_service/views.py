@@ -372,15 +372,14 @@ class PartnerUpdateCelery(APIView):
         if request.user.type != 'shop':
             return Response({'Status': False, 'Error': 'Только для магазинов'}, status=403)
 
-        file = request.FILES
-        if file:
+        else:
             user_id = request.user.id
             # send for the execute in tasks.py
-            import_shop_data(file, user_id)
+            import_shop_data(user_id)
 
             new_price_celery.send(sender=self.__class__, user_id=request.user.id)
 
-            return Response({'Status': True})
+            return Response({'Status': True, 'Sent_email_status': 'Sent_With_Celery'})
 
         return Response({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'}, status=400)
 
