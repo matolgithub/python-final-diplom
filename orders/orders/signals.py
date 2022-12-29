@@ -8,6 +8,7 @@ from datetime import datetime
 new_user_registered = Signal('user_id')
 new_order = Signal('user_id')
 new_price = Signal('user_id')
+new_price_celery = Signal('user_id')
 
 
 @receiver(reset_password_token_created)
@@ -59,7 +60,23 @@ def new_price_signal(user_id, **kwargs):
     user_email, user_fn, user_ln, user_company, user_position = user.email, user.first_name, user.last_name, \
         user.company, user.position
     title = f'Информация для {user_company}, {user_email} - прайс обновлён!'
-    message = f'Данным письмом сообщаем Вам, {user_position} {user_fn} {user_ln}, что прайс на товары изменён. ' \
-              f'{datetime.now()}!'
+    message = f'Данным письмом сообщаем Вам, уважаемый {user_position} {user_fn} {user_ln}, что прайс на товары ' \
+              f'изменён. {datetime.now()}!'
+    email = user.email
+    send_emails.delay(title, message, email)
+
+
+@receiver(new_price_celery)
+def new_price_celery_signal(user_id, **kwargs):
+    """
+    Отправяем письмо при обновлении прайса
+    """
+    # send an e-mail to the user
+    user = User.objects.get(id=user_id)
+    user_email, user_fn, user_ln, user_company, user_position = user.email, user.first_name, user.last_name, \
+        user.company, user.position
+    title = f'Информация для {user_company}, {user_email} - прайс обновлён!'
+    message = f'Данным письмом сообщаем Вам, уважаемый {user_position} {user_fn} {user_ln}, что прайс на товары ' \
+              f'изменён. {datetime.now()}****from_Celery****!'
     email = user.email
     send_emails.delay(title, message, email)

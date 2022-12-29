@@ -25,7 +25,7 @@ urlpatterns = [
     path('basket', BasketView.as_view(), name='basket'),
     path('order', OrderView.as_view(), name='order'),
     path('partner/update', PartnerUpdate.as_view(), name='partner-update'),
-    path('partner/update_celery', PartnerUpdateCelery, name='partner-update-celery'),
+    path('partner/update_celery', PartnerUpdateCelery.as_view(), name='partner-update-celery'),
     path('partner/state', PartnerState.as_view(), name='partner-state'),
     path('partner/orders', PartnerOrders.as_view(), name='partner-orders'),
     path('', include(router.urls)),

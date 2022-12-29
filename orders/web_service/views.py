@@ -11,7 +11,7 @@ from rest_framework import status, viewsets
 from distutils.util import strtobool
 from ujson import loads as load_json
 from orders.tasks import import_shop_data
-from orders.signals import new_user_registered, new_order, new_price
+from orders.signals import new_user_registered, new_order, new_price, new_price_celery
 from .models import Shop, Category, ProductInfo, Order, OrderItem, Product, Contact, ConfirmEmailToken, Parameter, \
     ProductParameter
 from .serializers import UserSerializer, CategorySerializer, ShopSerializer, ProductInfoSerializer, \
@@ -366,11 +366,23 @@ class PartnerUpdateCelery(APIView):
     throttle_scope = 'partner'
 
     def post(self, request, *args, **kwargs):
-        import_shop_data(request)
+        if not request.user.is_authenticated:
+            return Response({'Status': False, 'Error': 'Log in required'}, status=403)
 
-        new_price.send(sender=self.__class__, user_id=request.user.id)
+        if request.user.type != 'shop':
+            return Response({'Status': False, 'Error': 'Только для магазинов'}, status=403)
 
-        return Response({'Status': 'Запрос обновления прайса - отправлен!'})
+        file = request.FILES
+        if file:
+            user_id = request.user.id
+            # send for the execute in tasks.py
+            import_shop_data(file, user_id)
+
+            new_price_celery.send(sender=self.__class__, user_id=request.user.id)
+
+            return Response({'Status': True})
+
+        return Response({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'}, status=400)
 
 
 class PartnerState(APIView):
