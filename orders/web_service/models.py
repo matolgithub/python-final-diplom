@@ -6,18 +6,20 @@ from django_rest_passwordreset.tokens import get_token_generator
 from django.core.files import storage
 
 USER_TYPE_CHOICES = (
+    ('visitor', 'Посетитель сервиса'),
     ('shop', 'Магазин'),
     ('buyer', 'Покупатель'),
 )
 
 STATE_CHOICES = (
-    ('basket', 'Статус корзины'),
-    ('new', 'Новый'),
-    ('confirmed', 'Подтвержден'),
-    ('assembled', 'Собран'),
-    ('sent', 'Отправлен'),
-    ('delivered', 'Доставлен'),
-    ('canceled', 'Отменен'),
+    ('none_state', 'Без статуса'),
+    ('basket', 'Статус заказа - Корзина'),
+    ('new', 'Статус заказа - Новый'),
+    ('confirmed', 'Статус заказа -Подтвержден'),
+    ('collected', 'Статус заказа - Собран'),
+    ('sent', 'Статус заказа - Отправлен'),
+    ('delivered', 'Статус заказа - Доставлен'),
+    ('canceled', 'Статус заказа - Отменен'),
 )
 
 
@@ -71,7 +73,7 @@ class User(AbstractUser):
         'Unselect this instead of deleting accounts.'
     ),
                                     )
-    type = models.CharField(verbose_name='Тип пользователя', choices=USER_TYPE_CHOICES, max_length=5, default='buyer')
+    type = models.CharField(verbose_name='Тип пользователя', choices=USER_TYPE_CHOICES, max_length=20, default='buyer')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'

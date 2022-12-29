@@ -1,22 +1,22 @@
 # API-запросы для Поставщиков
 
-@baseUrl = http://127.0.0.1:8000/api/v1
+@baseUrl = http://127.0.0.1:8000/
 
 
 ###
 
 # Получить статус партнера
-GET {{baseUrl}}/partner/state/2/
+GET {{baseUrl}}/api/v1/partner/state
 Content-Type: application/json
-Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
+Authorization: Token 06ee639c399d21e54d7af52d13a39e46f5221dfd
 
 
 ###
 
 # Обновления статуса партнера
-PATCH {{baseUrl}}/partner/state/2/
+PATCH {{baseUrl}}/partner/state
 Content-Type: application/json
-Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
+Authorization: Token 06ee639c399d21e54d7af52d13a39e46f5221dfd
 
 {
     "state": "on"
@@ -27,21 +27,22 @@ Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
 # Получения заказов магазина (Successfully - HTTP/1.1 200 OK)
 GET {{baseUrl}}/partner/orders
 Content-Type: application/json
-Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
+Authorization: Token 2a1335f70806544d2b14cc3154199deab0510dec
 
 ###
 
 # Обновление прайса (Successfully - HTTP/1.1 200 OK)
-POST {{baseUrl}}/partner/update
+POST {{baseUrl}}/api/v1/partner/update
 Content-Type: application/json
-Authorization: Token 2a1335f70806544d2b14cc3154199deab0510dec
+Authorization: Token 06ee639c399d21e54d7af52d13a39e46f5221dfd
 
 {
     "url": "https://raw.githubusercontent.com/matolgithub/python-final-diplom/master/netology/data/shop1.yaml"
 }
 
 # {
-#   "Status": true
+#   "Status": true,
+#   "Sent_email_status": "Sent"
 # }
 
 ###
