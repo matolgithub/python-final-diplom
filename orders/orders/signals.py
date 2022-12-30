@@ -11,18 +11,6 @@ new_price = Signal('user_id')
 new_price_celery = Signal('user_id')
 
 
-@receiver(reset_password_token_created)
-def password_reset_token_created(sender, instance, reset_password_token, **kwargs):
-    """
-    Отправляем письмо с токеном для сброса пароля
-    """
-    # send an e-mail to the user
-    title = f'Сброс пароля для {reset_password_token.user}'
-    message = f'Токен для сброса пароля {reset_password_token.key}'
-    email = reset_password_token.user
-    send_emails.delay(title, message, email)
-
-
 @receiver(new_user_registered)
 def new_user_registered_signal(user_id, **kwargs):
     """
@@ -79,4 +67,16 @@ def new_price_celery_signal(user_id, **kwargs):
     message = f'Данным письмом сообщаем Вам, уважаемый {user_position} {user_fn} {user_ln}, что прайс на товары ' \
               f'изменён. {datetime.now()}****from_Celery****!'
     email = user.email
+    send_emails.delay(title, message, email)
+
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, **kwargs):
+    """
+    Отправляем письмо с токеном для сброса пароля
+    """
+    # send an e-mail to the user
+    title = f'Сброс пароля для {reset_password_token.user}'
+    message = f'Токен для сброса пароля {reset_password_token.key}'
+    email = reset_password_token.user
     send_emails.delay(title, message, email)

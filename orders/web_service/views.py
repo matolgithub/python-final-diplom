@@ -57,11 +57,9 @@ class RegisterAccount(APIView):
                     new_user_registered.send(sender=self.__class__, user_id=user.id)
                     return JsonResponse({'Status': True})
                 else:
-                    return JsonResponse({'Status': False, 'Errors': user_serializer.errors},
-                                        status=status.HTTP_403_FORBIDDEN)
+                    return JsonResponse({'Status': False, 'Errors': user_serializer.errors}, status=403)
 
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'}, status=400)
 
 
 class ConfirmAccount(APIView):
@@ -84,11 +82,9 @@ class ConfirmAccount(APIView):
                 token.delete()
                 return JsonResponse({'Status': True})
             else:
-                return JsonResponse({'Status': False, 'Errors': 'Неправильно указан токен или email'},
-                                    status=status.HTTP_403_FORBIDDEN)
+                return JsonResponse({'Status': False, 'Errors': 'Неправильно указан токен или email'}, status=403)
 
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'}, status=400)
 
 
 class LoginAccount(APIView):
@@ -109,11 +105,9 @@ class LoginAccount(APIView):
 
                     return JsonResponse({'Status': True, 'Token': token.key})
 
-            return JsonResponse({'Status': False, 'Errors': 'Не удалось авторизовать'},
-                                status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Errors': 'Не удалось авторизовать'}, status=403)
 
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'}, status=400)
 
 
 class AccountDetails(APIView):
@@ -125,7 +119,7 @@ class AccountDetails(APIView):
     # получить данные
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
@@ -133,7 +127,7 @@ class AccountDetails(APIView):
     # Редактирование методом POST
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         # проверяем обязательные аргументы
         if 'password' in request.data:
@@ -153,18 +147,9 @@ class AccountDetails(APIView):
         user_serializer = UserSerializer(request.user, data=request.data, partial=True)
         if user_serializer.is_valid():
             user_serializer.save()
-            return JsonResponse({'Status': True}, status=status.HTTP_201_CREATED)
+            return JsonResponse({'Status': True}, status=201)
         else:
-            return JsonResponse({'Status': False, 'Errors': user_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class CategoryView(viewsets.ModelViewSet):
-    """
-    Класс для просмотра категорий
-    """
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    ordering = ('name',)
+            return JsonResponse({'Status': False, 'Errors': user_serializer.errors}, status=400)
 
 
 class ShopView(viewsets.ModelViewSet):
@@ -173,6 +158,15 @@ class ShopView(viewsets.ModelViewSet):
     """
     queryset = Shop.objects.filter(state=True)
     serializer_class = ShopSerializer
+    ordering = ('name',)
+
+
+class CategoryView(viewsets.ModelViewSet):
+    """
+    Класс для просмотра категорий
+    """
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
     ordering = ('name',)
 
 
@@ -214,7 +208,7 @@ class BasketView(APIView):
     # получить корзину
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
         basket = Order.objects.filter(
             user_id=request.user.id, state='basket').prefetch_related(
             'ordered_items__product_info__product__category',
@@ -227,14 +221,14 @@ class BasketView(APIView):
     # редактировать корзину
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         items_string = request.data.get('items')
         if items_string:
             try:
                 items_dict = load_json(items_string)
             except ValueError:
-                JsonResponse({'Status': False, 'Errors': 'Неверный формат запроса'}, status=status.HTTP_403_FORBIDDEN)
+                JsonResponse({'Status': False, 'Errors': 'Неверный формат запроса'}, status=403)
             else:
                 basket, _ = Order.objects.get_or_create(user_id=request.user.id, state='basket')
                 objects_created = 0
@@ -251,7 +245,7 @@ class BasketView(APIView):
 
                     else:
 
-                        JsonResponse({'Status': False, 'Errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+                        JsonResponse({'Status': False, 'Errors': serializer.errors}, status=400)
 
                 return JsonResponse({'Status': True, 'Создано объектов': objects_created})
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'},
@@ -260,7 +254,7 @@ class BasketView(APIView):
     # удалить товары из корзины
     def delete(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         items_string = request.data.get('items')
         if items_string:
@@ -282,14 +276,14 @@ class BasketView(APIView):
     # добавить позиции в корзину
     def put(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         items_string = request.data.get('items')
         if items_string:
             try:
                 items_dict = load_json(items_string)
             except ValueError:
-                JsonResponse({'Status': False, 'Errors': 'Неверный формат запроса'}, status=status.HTTP_403_FORBIDDEN)
+                JsonResponse({'Status': False, 'Errors': 'Неверный формат запроса'}, status=403)
             else:
                 basket, _ = Order.objects.get_or_create(user_id=request.user.id, state='basket')
                 objects_updated = 0
@@ -299,8 +293,7 @@ class BasketView(APIView):
                             quantity=order_item['quantity'])
 
                 return JsonResponse({'Status': True, 'Обновлено объектов': objects_updated})
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'}, status=400)
 
 
 class PartnerUpdate(APIView):
@@ -393,10 +386,10 @@ class PartnerState(APIView):
     # получить текущий статус
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         if request.user.type != 'shop':
-            return JsonResponse({'Status': False, 'Error': 'Только для магазинов'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Только для магазинов'}, status=403)
 
         shop = request.user.shop
         serializer = ShopSerializer(shop)
@@ -405,17 +398,17 @@ class PartnerState(APIView):
     # изменить текущий статус
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         if request.user.type != 'shop':
-            return JsonResponse({'Status': False, 'Error': 'Только для магазинов'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Только для магазинов'}, status=403)
         state = request.data.get('state')
         if state:
             try:
                 Shop.objects.filter(user_id=request.user.id).update(state=strtobool(state))
                 return JsonResponse({'Status': True})
             except ValueError as error:
-                return JsonResponse({'Status': False, 'Errors': str(error)}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse({'Status': False, 'Errors': str(error)}, status=400)
 
         return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -429,17 +422,16 @@ class PartnerOrders(APIView):
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         if request.user.type != 'shop':
-            return JsonResponse({'Status': False, 'Error': 'Только для магазинов'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Только для магазинов'}, status=403)
 
         items = Prefetch('ordered_items', queryset=OrderItem.objects.filter(shop__user_id=request.user.id))
         order = Order.objects.filter(
             ordered_items__shop__user_id=request.user.id).exclude(state='basket'). \
             prefetch_related(items).select_related('contact').annotate(
-            total_sum=Sum('ordered_items__total_amount'),
-            total_quantity=Sum('ordered_items__quantity'))
+            total_sum=Sum('ordered_items__total_amount'), total_quantity=Sum('ordered_items__quantity'))
 
         serializer = OrderSerializer(order, many=True)
         return Response(serializer.data)
@@ -454,7 +446,7 @@ class ContactView(APIView):
     # получить мои контакты
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
         contact = Contact.objects.filter(
             user_id=request.user.id)
         serializer = ContactSerializer(contact, many=True)
@@ -463,7 +455,7 @@ class ContactView(APIView):
     # добавить новый контакт
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         if {'city', 'street', 'phone'}.issubset(request.data):
             request.data._mutable = True
@@ -474,15 +466,14 @@ class ContactView(APIView):
                 serializer.save()
                 return JsonResponse({'Status': True})
             else:
-                JsonResponse({'Status': False, 'Errors': serializer.errors}, status=status.HTTP_403_FORBIDDEN)
+                JsonResponse({'Status': False, 'Errors': serializer.errors}, status=403)
 
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'}, status=400)
 
     # удалить контакт
     def delete(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         items_string = request.data.get('items')
         if items_string:
@@ -503,7 +494,7 @@ class ContactView(APIView):
     # редактировать контакт
     def put(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         if 'id' in request.data:
             if request.data['id'].isdigit():
@@ -515,10 +506,9 @@ class ContactView(APIView):
                         serializer.save()
                         return JsonResponse({'Status': True})
                     else:
-                        JsonResponse({'Status': False, 'Errors': serializer.errors}, status=status.HTTP_403_FORBIDDEN)
+                        JsonResponse({'Status': False, 'Errors': serializer.errors}, status=403)
 
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'}, status=400)
 
 
 class OrderView(APIView):
@@ -530,7 +520,7 @@ class OrderView(APIView):
     # получить мои заказы
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
         order = Order.objects.filter(
             user_id=request.user.id).exclude(state='basket').prefetch_related(
             'ordered_items').select_related('contact').annotate(
@@ -543,7 +533,7 @@ class OrderView(APIView):
     # разместить заказ из корзины
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=status.HTTP_403_FORBIDDEN)
+            return JsonResponse({'Status': False, 'Error': 'Log in required'}, status=403)
 
         if {'id', 'contact'}.issubset(request.data):
             if request.data['id'].isdigit():
@@ -554,12 +544,10 @@ class OrderView(APIView):
                         state='new')
                 except IntegrityError as error:
                     print(error)
-                    return JsonResponse({'Status': False, 'Errors': 'Неправильно указаны аргументы'},
-                                        status=status.HTTP_400_BAD_REQUEST)
+                    return JsonResponse({'Status': False, 'Errors': 'Неправильно указаны аргументы'}, status=400)
                 else:
                     if is_updated:
                         new_order.send(sender=self.__class__, user_id=request.user.id)
                         return JsonResponse({'Status': True})
 
-        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'Status': False, 'Errors': 'Не указаны все необходимые аргументы'}, status=400)

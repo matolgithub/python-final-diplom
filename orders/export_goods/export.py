@@ -31,9 +31,3 @@ class ProductResource(resources.ModelResource):
         with open(f"{body_files}.json", "w",
                   encoding="utf-8") as file:
             file.write(str(data_json))
-
-
-# if __name__ == "__main__":
-#     exp_obj = ProductResource()
-#     exp_obj.export_from_db()
-    # exp_obj.write_file()

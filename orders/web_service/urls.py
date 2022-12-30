@@ -3,8 +3,7 @@ from rest_framework.routers import DefaultRouter
 from django_rest_passwordreset.views import reset_password_request_token, reset_password_confirm
 from .views import RegisterAccount, ConfirmAccount, AccountDetails, ContactView, LoginAccount, \
     ShopView, PartnerUpdate, PartnerUpdateCelery, PartnerState, PartnerOrders, ProductInfoView, CategoryView, \
-    BasketView, \
-    OrderView
+    BasketView, OrderView
 
 app_name = 'web_service'
 

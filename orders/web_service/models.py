@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django_rest_passwordreset.tokens import get_token_generator
-from django.core.files import storage
 
 USER_TYPE_CHOICES = (
     ('visitor', 'Посетитель сервиса'),

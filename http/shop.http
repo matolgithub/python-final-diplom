@@ -2,12 +2,6 @@
 
 @baseUrl = http://127.0.0.1:8000
 
-###
-
-# Список магазинов (Successfully: HTTP/1.1 200 OK)
-GET {{baseUrl}}/shops
-Content-Type: application/json
-
 
 ###
 
@@ -19,7 +13,7 @@ Content-Type: application/json
 ###
 
 # Фильтрация товаров (Successfully: HTTP/1.1 200 OK)
-GET {{baseUrl}}/api/v1/products?shop_id=1&category_id=2
+GET {{baseUrl}}/api/v1/products?shop_id=2&category_id=1
 Content-Type: application/json
 
 
@@ -28,6 +22,26 @@ Content-Type: application/json
 # Категории товаров (Successfully: HTTP/1.1 200 OK)
 GET {{baseUrl}}/api/v1/categories
 Content-Type: application/json
+
+
+###
+
+# Список магазинов (Successfully: HTTP/1.1 200 OK)
+GET {{baseUrl}}/api/v1/shops
+Content-Type: application/json
+
+# {
+#   "count": 1,
+#   "next": null,
+#   "previous": null,
+#   "results": [
+#     {
+#       "id": 2,
+#       "name": "Связной",
+#       "state": true
+#     }
+#   ]
+# }
 
 
 ###
@@ -94,7 +108,7 @@ Authorization: Token c3e06221b0e0beba461926b4b2a5a77499a2ebf0
 # Получение корзины (Successfully: HTTP/1.1 200 OK)
 GET {{baseUrl}}/api/v1/basket
 Content-Type: application/json
-Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
+Authorization: Token 62ac6283fe26a5221bfb6a8e823dc37a5a9f649c
 
 
 ###
@@ -102,18 +116,22 @@ Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
 # Размещение заказа (Successfully: HTTP/1.1 200 OK)
 POST {{baseUrl}}/api/v1/order
 Content-Type: application/json
-Authorization: Token 3e18f17341fb11d8e73daef4b8973c5e5d57c59e
+Authorization: Token 62ac6283fe26a5221bfb6a8e823dc37a5a9f649c
 
 {
-    "id": "1",
-    "contact": "2"
+    "id": "16",
+    "contact": "4"
 }
+
+# {
+#   "Status": true
+# }
 
 ###
 
 # Получение заказов (Successfully: HTTP/1.1 200 OK)
 GET {{baseUrl}}/api/v1/order
 Content-Type: application/json
-Authorization: Token c3e06221b0e0beba461926b4b2a5a77499a2ebf0
+Authorization: Token 62ac6283fe26a5221bfb6a8e823dc37a5a9f649c
 
 ###
