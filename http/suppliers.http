@@ -38,7 +38,7 @@ Authorization: Token 128b897d8740d088e54dab5e696f9f3276658385
 # Обновление прайса (Successfully - HTTP/1.1 200 OK)
 POST {{baseUrl}}/partner/update
 Content-Type: application/json
-Authorization: Token 128b897d8740d088e54dab5e696f9f3276658385
+Authorization: Token 8457129097b010f0707dd6a85ee94640d2719a16
 
 {
     "url": "https://raw.githubusercontent.com/matolgithub/python-final-diplom/master/netology/data/shop1.yaml"
@@ -54,7 +54,7 @@ Authorization: Token 128b897d8740d088e54dab5e696f9f3276658385
 # Обновление прайса через Celery tasks (Successfully - HTTP/1.1 200 OK)
 POST {{baseUrl}}/partner/update_celery
 Content-Type: application/json
-Authorization: Token 128b897d8740d088e54dab5e696f9f3276658385
+Authorization: Token 8457129097b010f0707dd6a85ee94640d2719a16
 
 {
     "url": "https://github.com/matolgithub/python-final-diplom/tree/master/orders/orders/yaml/goods.yaml"

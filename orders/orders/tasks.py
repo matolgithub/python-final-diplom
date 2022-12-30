@@ -44,6 +44,11 @@ def send_emails(title, message, email, *args, **kwargs):
 
 @app.task(base=FaultTolerantTask, name='import_shop_task')
 def import_shop_data(user_id):
+    url = "https://raw.githubusercontent.com/matolgithub/python-final-diplom/master/netology/data/shop1.yaml"
+    response = get(url=url)
+    with open('orders/yaml/goods.yaml', 'wb') as file:
+        file.write(response.content)
+
     with open('orders/yaml/goods.yaml', 'r') as data_file:
         yaml_file = yaml.safe_load(data_file)
 
