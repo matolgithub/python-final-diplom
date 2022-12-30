@@ -11,8 +11,8 @@ app_name = 'web_service'
 router = DefaultRouter()
 
 router.register('products', ProductInfoView, basename='products')
-router.register('categories', CategoryView)
-router.register('shops', ShopView)
+router.register('categories', CategoryView, basename='categories')
+router.register('shops', ShopView, basename='shops')
 
 urlpatterns = [
     path('user/register', RegisterAccount.as_view(), name='user-register'),
