@@ -1,12 +1,8 @@
 import os
 
-from django.http import JsonResponse
 from django.core.mail.message import EmailMultiAlternatives
-from django.core.validators import URLValidator
-from django.core.exceptions import ValidationError
 from .celery_conf import app
 from requests import get
-from yaml import load as load_yaml, Loader
 from web_service.models import Shop, Category, Product, Parameter, ProductParameter, ProductInfo
 from orders.settings import DEFAULT_EMAIL_ADMIN, EMAIL_HOST_USER
 
